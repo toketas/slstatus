@@ -1,0 +1,10 @@
+#!/bin/bash
+BATT=$( acpi -b | tail -n 1 | sed 's/.*[charging|unknown], \([0-9]*\)%.*/\1/gi' )
+STATUS=$( acpi -b | tail -n 1 | sed 's/.*: \([a-zA-Z]*\),.*/\1/gi' )
+BEEP='paplay /usr/share/sounds/sound-icons/gummy-cat-2.wav'
+if ([ $BATT -le 10 ] && [ $STATUS == 'Discharging' ]); then
+    $BEEP && sleep 0.05
+    $BEEP && sleep 0.05
+    $BEEP && sleep 0.05
+    notify-send -u critical "Charge your notebook"
+fi
